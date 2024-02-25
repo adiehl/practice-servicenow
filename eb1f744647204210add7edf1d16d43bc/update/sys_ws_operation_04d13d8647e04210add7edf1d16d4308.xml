@@ -10,7 +10,6 @@
         <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
     var location = request.pathParams.location; // Extrahiere den Standort aus dem Pfad
     var currentDate = new GlideDateTime(); // Erstelle ein GlideDateTime-Objekt für das aktuelle Datum
-    currentDate.setDisplayValue(gs.nowDateTime()); // Setze das aktuelle Datum und die Uhrzeit
 
     // Suche in der Tabelle nach einem Eintrag für die Stadt und das aktuelle Datum
     var weatherRecord = new GlideRecord('x_1324232_casestud_wetterdaten');
@@ -99,14 +98,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2024-02-25 14:24:41</sys_created_on>
         <sys_id>04d13d8647e04210add7edf1d16d4308</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>get_weather</sys_name>
         <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
         <sys_policy/>
         <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
         <sys_update_name>sys_ws_operation_04d13d8647e04210add7edf1d16d4308</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-02-25 15:09:23</sys_updated_on>
+        <sys_updated_on>2024-02-25 15:12:20</sys_updated_on>
         <web_service_definition display_value="casestudy_weather">bafcd5c247a04210add7edf1d16d4378</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>
