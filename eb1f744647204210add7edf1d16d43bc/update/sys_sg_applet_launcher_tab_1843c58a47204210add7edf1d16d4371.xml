@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_applet_launcher_tab">
+    <sys_sg_applet_launcher_tab action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applet_launcher display_value="CaseStudy">d843c1c247ec0210add7edf1d16d4323</applet_launcher>
+        <icon display_value="Home CaseStudy">5843c58a47204210add7edf1d16d4371</icon>
+        <label>CaseStudy</label>
+        <sys_class_name>sys_sg_applet_launcher_tab</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-02-25 11:00:46</sys_created_on>
+        <sys_id>1843c58a47204210add7edf1d16d4371</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>CaseStudy</sys_name>
+        <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
+        <sys_update_name>sys_sg_applet_launcher_tab_1843c58a47204210add7edf1d16d4371</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-02-25 11:00:46</sys_updated_on>
+    </sys_sg_applet_launcher_tab>
+</record_update>

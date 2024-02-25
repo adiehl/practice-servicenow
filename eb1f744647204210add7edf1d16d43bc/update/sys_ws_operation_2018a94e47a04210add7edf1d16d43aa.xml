@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>get_lat_lon</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var location = request.pathParams.location; // Extrahiere den Standort aus dem Pfad
+
+    var restMessage = new sn_ws.RESTMessageV2(); // ServiceNow verwendet RESTMessageV2-Instanz zur Kommunikation
+
+    // Setze die HTTP-Methode und die Endpoint-URL
+    restMessage.setHttpMethod('GET');
+    restMessage.setEndpoint('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(location) + '&limit=1');
+    try {
+        var restResponse = restMessage.execute();
+        var responseBody = restResponse.getBody();
+        var jsonData = JSON.parse(responseBody);
+
+        if (jsonData.results && jsonData.results.length > 0) {
+            var firstResult = jsonData.results[0];
+
+            // Bereite die Daten für die Rückgabe vor
+            var result = {
+                id: firstResult.id,
+                name: firstResult.name,
+                latitude: firstResult.latitude,
+                longitude: firstResult.longitude
+            };
+
+            response.setStatus(200); // Setze den HTTP-Statuscode korrekt
+            response.setContentType('application/json');
+            //response.setBody(JSON.stringify(result)); // Setze den Antwortkörper
+			response.getStreamWriter().writeString(JSON.stringify(result));
+        } else {
+            // Keine Ergebnisse gefunden
+            response.setStatus(404); // Not Found
+            response.setContentType('application/json');
+			response.getStreamWriter().writeString(JSON.stringify({error: "No results found"}));
+        }
+    } catch (ex) {
+        // Fehlerbehandlung
+        response.setStatus(500); // Internal Server Error
+        response.setContentType('application/json');
+        response.getStreamWriter().writeString(JSON.stringify({error: ex.message}));
+    }
+
+})(request, response);
+]]></operation_script>
+        <operation_uri>/api/x_1324232_casestud/casestudy_weather/location/{location}</operation_uri>
+        <produces>application/json</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/location/{location}</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>false</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-02-25 13:52:19</sys_created_on>
+        <sys_id>2018a94e47a04210add7edf1d16d43aa</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>get_lat_lon</sys_name>
+        <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
+        <sys_update_name>sys_ws_operation_2018a94e47a04210add7edf1d16d43aa</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-02-25 14:21:47</sys_updated_on>
+        <web_service_definition display_value="casestudy_weather">bafcd5c247a04210add7edf1d16d4378</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

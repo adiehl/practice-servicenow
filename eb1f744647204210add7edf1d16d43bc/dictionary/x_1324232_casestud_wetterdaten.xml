@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="aae1814a47204210add7edf1d16d43ca" label="Wetterdaten" max_length="40" name="x_1324232_casestud_wetterdaten" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="Datum" max_length="40" name="datum" type="glide_date"/>
+        <element label="Max Temperatur" max_length="15" name="max_temperatur" type="decimal"/>
+        <element label="Min Temperatur" max_length="15" name="min_temperatur" type="decimal"/>
+        <element attributes="edge_encryption_enabled=true" label="Stadt" max_length="60" name="stadt" type="string"/>
+    </element>
+</database>
