@@ -8,80 +8,18 @@
         <http_method>GET</http_method>
         <name>get_weather</name>
         <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
-    var location = request.pathParams.location; // Extrahiere den Standort aus dem Pfad
-    var currentDate = new GlideDateTime(); // Erstelle ein GlideDateTime-Objekt für das aktuelle Datum
-
-    // Suche in der Tabelle nach einem Eintrag für die Stadt und das aktuelle Datum
-    var weatherRecord = new GlideRecord('x_1324232_casestud_wetterdaten');
-    weatherRecord.addQuery('stadt', location);
-    weatherRecord.addQuery('datum', currentDate.getLocalDate()); // Suche nach dem lokalen Datum
-    weatherRecord.query();
-
-    if (weatherRecord.next()) {
-        // Eintrag existiert bereits, gib die vorhandenen Daten zurück
-        var existingData = {
-            name: weatherRecord.stadt.toString(),
-            time: weatherRecord.datum.toString(),
-            max_temp: weatherRecord.max_temperatur.toString(),
-            min_temp: weatherRecord.min_temperatur.toString()
-        };
-
-        response.setStatus(200); // HTTP-Statuscode
+    var location = request.pathParams.location;
+    var utilities = new MyUtilities();
+    try {
+        var weatherData = utilities.getWeatherData(location);
+        response.setStatus(200);
         response.setContentType('application/json');
-        response.getStreamWriter().writeString(JSON.stringify(existingData));
-    } else {
-        // Kein Eintrag gefunden, fahre mit der Abfrage fort
-        var geoCodingMessage = new sn_ws.RESTMessageV2();
-        geoCodingMessage.setHttpMethod('GET');
-        geoCodingMessage.setEndpoint('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(location) + '&limit=1');
-
-        try {
-            var geoResponse = geoCodingMessage.execute();
-            var geoBody = geoResponse.getBody();
-            var geoData = JSON.parse(geoBody);
-
-            if (geoData.results && geoData.results.length > 0) {
-                var firstResult = geoData.results[0];
-                var latitude = firstResult.latitude;
-                var longitude = firstResult.longitude;
-
-                var weatherMessage = new sn_ws.RESTMessageV2();
-                weatherMessage.setHttpMethod('GET');
-                weatherMessage.setEndpoint('https://api.open-meteo.com/v1/forecast?latitude=' + latitude + '&longitude=' + longitude + '&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1');
-
-                var weatherResponse = weatherMessage.execute();
-                var weatherBody = weatherResponse.getBody();
-                var weatherData = JSON.parse(weatherBody);
-
-                var extractedData = {
-                    name: firstResult.name,
-                    time: weatherData.daily.time[0],
-                    max_temp: weatherData.daily.temperature_2m_max[0],
-                    min_temp: weatherData.daily.temperature_2m_min[0]
-                };
-
-                // Speichere die neuen Wetterdaten in der Tabelle
-                var newWeatherRecord = new GlideRecord('x_1324232_casestud_wetterdaten');
-                newWeatherRecord.initialize();
-                newWeatherRecord.stadt = extractedData.name;
-                newWeatherRecord.datum = extractedData.time;
-                newWeatherRecord.max_temperatur = extractedData.max_temp;
-                newWeatherRecord.min_temperatur = extractedData.min_temp;
-                newWeatherRecord.insert();
-
-                response.setStatus(200);
-                response.setContentType('application/json');
-                response.getStreamWriter().writeString(JSON.stringify(extractedData));
-            } else {
-                response.setStatus(404);
-                response.setContentType('application/json');
-                response.getStreamWriter().writeString(JSON.stringify({error: "No location results found"}));
-            }
-        } catch (ex) {
-            response.setStatus(500);
-            response.setContentType('application/json');
-            response.getStreamWriter().writeString(JSON.stringify({error: ex.message}));
-        }
+        response.getStreamWriter().writeString(JSON.stringify(weatherData));
+    } catch (ex) {
+        // Handle errors (e.g., no data found or API errors)
+        response.setStatus(ex.message === "No location results found or error fetching weather data." ? 404 : 500);
+        response.setContentType('application/json');
+        response.getStreamWriter().writeString(JSON.stringify({error: ex.message}));
     }
 })(request, response);
 ]]></operation_script>
@@ -98,14 +36,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2024-02-25 14:24:41</sys_created_on>
         <sys_id>04d13d8647e04210add7edf1d16d4308</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>get_weather</sys_name>
         <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
         <sys_policy/>
         <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
         <sys_update_name>sys_ws_operation_04d13d8647e04210add7edf1d16d4308</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-02-25 15:12:20</sys_updated_on>
+        <sys_updated_on>2024-02-27 15:48:41</sys_updated_on>
         <web_service_definition display_value="casestudy_weather">bafcd5c247a04210add7edf1d16d4378</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>
