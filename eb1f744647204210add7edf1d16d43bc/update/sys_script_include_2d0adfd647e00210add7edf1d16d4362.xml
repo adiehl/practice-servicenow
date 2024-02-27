@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_1324232_casestud.MyUtilities</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Reusable Code for the Weather- and Geocoding API</description>
+        <name>MyUtilities</name>
+        <script><![CDATA[var MyUtilities = Class.create();
+MyUtilities.prototype = {
+    initialize: function() {
+    },
+
+    // Retrieves weather data for a specific location and date
+    getWeatherData: function(location) {
+        var currentDate = new GlideDateTime(); // Current date
+        var weatherRecord = this._findWeatherRecord(location, currentDate.getLocalDate());
+
+        if (weatherRecord) {
+            return this._formatExistingWeatherData(weatherRecord);
+        } else {
+            return this._fetchAndStoreWeatherData(location);
+        }
+    },
+
+    // Finds an existing weather record in the database
+    _findWeatherRecord: function(location, localDate) {
+        var weatherRecord = new GlideRecord('x_1324232_casestud_wetterdaten');
+        weatherRecord.addQuery('stadt', location);
+        weatherRecord.addQuery('datum', localDate);
+        weatherRecord.query();
+        return weatherRecord.next() ? weatherRecord : null;
+    },
+
+    // Formats existing weather data from a GlideRecord
+    _formatExistingWeatherData: function(weatherRecord) {
+        return {
+            name: weatherRecord.stadt.toString(),
+            time: weatherRecord.datum.toString(),
+            max_temp: weatherRecord.max_temperatur.toString(),
+            min_temp: weatherRecord.min_temperatur.toString()
+        };
+    },
+
+    // Fetches weather data from external API and stores it in the database
+    _fetchAndStoreWeatherData: function(location) {
+        var geoData = this._fetchGeoCodingData(location);
+        if (geoData && geoData.results && geoData.results.length > 0) {
+            var firstResult = geoData.results[0];
+            var weatherData = this._fetchWeatherData(firstResult.latitude, firstResult.longitude);
+            if (weatherData) {
+                return this._storeAndFormatNewWeatherData(firstResult.name, weatherData);
+            }
+        }
+        throw new Error("No location results found or error fetching weather data.");
+    },
+
+    // Fetch geocoding data
+    _fetchGeoCodingData: function(location) {
+        var geoCodingMessage = new sn_ws.RESTMessageV2();
+        geoCodingMessage.setHttpMethod('GET');
+        geoCodingMessage.setEndpoint('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(location) + '&limit=1');
+        var geoResponse = geoCodingMessage.execute();
+        var geoBody = geoResponse.getBody();
+        return JSON.parse(geoBody);
+    },
+
+    // Fetch weather data
+    _fetchWeatherData: function(latitude, longitude) {
+        var weatherMessage = new sn_ws.RESTMessageV2();
+        weatherMessage.setHttpMethod('GET');
+        weatherMessage.setEndpoint('https://api.open-meteo.com/v1/forecast?latitude=' + latitude + '&longitude=' + longitude + '&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1');
+        var weatherResponse = weatherMessage.execute();
+        var weatherBody = weatherResponse.getBody();
+        return JSON.parse(weatherBody);
+    },
+
+    // Stores new weather data in the database and formats it for the response
+    _storeAndFormatNewWeatherData: function(locationName, weatherData) {
+        var newWeatherRecord = new GlideRecord('x_1324232_casestud_wetterdaten');
+        newWeatherRecord.initialize();
+        newWeatherRecord.stadt = locationName;
+        newWeatherRecord.datum = weatherData.daily.time[0];
+        newWeatherRecord.max_temperatur = weatherData.daily.temperature_2m_max[0];
+        newWeatherRecord.min_temperatur = weatherData.daily.temperature_2m_min[0];
+        newWeatherRecord.insert();
+
+        return {
+            name: locationName,
+            time: weatherData.daily.time[0],
+            max_temp: weatherData.daily.temperature_2m_max[0],
+            min_temp: weatherData.daily.temperature_2m_min[0]
+        };
+    },
+
+    type: 'MyUtilities'
+};
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-02-26 16:40:40</sys_created_on>
+        <sys_id>2d0adfd647e00210add7edf1d16d4362</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>MyUtilities</sys_name>
+        <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
+        <sys_update_name>sys_script_include_2d0adfd647e00210add7edf1d16d4362</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-02-26 16:40:40</sys_updated_on>
+    </sys_script_include>
+</record_update>

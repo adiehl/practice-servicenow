@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {
+  var c = this;
+  
+  // Initialer Standort setzen
+  if (!c.data.location) {
+    c.data.location = "Mannheim"; // Standardwert setzen, falls nicht vorhanden
+  }
+
+  // Funktion zum Laden/Aktualisieren der Wetterdaten
+  c.loadWeatherData = function() {
+    c.server.get({location: c.data.location}).then(function(response) {
+      // Aktualisiere die Wetterdaten auf der Oberfläche
+      c.data.weather = response.data.weather;
+    });
+  };
+
+  // Funktion zum Ändern des Standorts
+  c.changeLocation = function(newLocation) {
+    c.data.location = newLocation;
+    c.loadWeatherData(); // Wetterdaten nach Standortänderung neu laden
+  };
+
+  // Initial die Wetterdaten laden
+  c.loadWeatherData();
+}
+]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>wetter_dashboard</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Wetter Dashboard</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  // Überprüfen, ob eine Location übergeben wurde
+	if (input !== undefined && input.location !== undefined) {
+		var location = input.location;
+	} else {
+		var location = 'Mannheim'; // Standardmäßig 'Mannheim'
+	}
+  
+  // REST API Aufruf vorbereiten
+  var restMessage = new sn_ws.RESTMessageV2();
+  restMessage.setHttpMethod('get');
+  // Stellen Sie sicher, dass die URL bis zum /weather/ Teil hier steht und der Standort dynamisch angehängt wird
+  restMessage.setEndpoint('https://dev230803.service-now.com/api/x_1324232_casestud/casestudy_weather/weather/' + location);
+  
+  // Ausführen des REST API Aufrufs
+  try {
+    var response = restMessage.execute();
+    var responseBody = response.getBody();
+    var jsonData = JSON.parse(responseBody);
+    data.weather = jsonData; // Sendet die Wetterdaten zurück zum Client
+  } catch (error) {
+    data.error = "Fehler beim Abrufen der Wetterdaten: " + error.message;
+  }
+})();
+]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-02-27 15:15:35</sys_created_on>
+        <sys_id>18c0d0f247200210add7edf1d16d4354</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>Wetter Dashboard</sys_name>
+        <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
+        <sys_update_name>sp_widget_18c0d0f247200210add7edf1d16d4354</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-02-27 15:35:00</sys_updated_on>
+        <template><![CDATA[<div>
+    <h2>Hallo und Willkommen bei der DB Case Study</h2>
+    <p>Ihr aktueller Standort: <strong>{{data.location}}</strong></p>
+    <input type="text" ng-model="newLocation" placeholder="Neuen Standort eingeben" />
+    <button ng-click="c.changeLocation(newLocation)">ändern</button>
+    <div ng-if="data.weather">
+        <p>Max Temp: {{data.weather.max_temp}}°C</p>
+        <p>Min Temp: {{data.weather.min_temp}}°C</p>
+    </div>
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">3607147a47200210add7edf1d16d4308</sp_column>
+        <sp_widget display_value="Image Link">86776e0453331300a699ddeeff7b12be</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-02-27 15:44:00</sys_created_on>
+        <sys_id>744758f647200210add7edf1d16d43fe</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
+        <sys_update_name>sp_instance_744758f647200210add7edf1d16d43fe</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-02-27 15:44:28</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"image": {
+		"value": "https://marketingportal.extranet.deutschebahn.com/resource/blob/9692844/d7817b0cdcac488ccc96aab2c7b37304/Bild_01-data.jpg",
+		"displayValue": "https://marketingportal.extranet.deutschebahn.com/resource/blob/9692844/d7817b0cdcac488ccc96aab2c7b37304/Bild_01-data.jpg"
+	},
+	"title": {
+		"value": "",
+		"displayValue": ""
+	},
+	"description": {
+		"value": "",
+		"displayValue": ""
+	},
+	"link": {
+		"value": "#",
+		"displayValue": "#"
+	},
+	"link_title": {
+		"value": "#",
+		"displayValue": "#"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=744758f647200210add7edf1d16d43fe"/>
+</record_update>

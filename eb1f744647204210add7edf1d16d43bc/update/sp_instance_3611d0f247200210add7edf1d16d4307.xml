@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="2">b60754ba47200210add7edf1d16d4356</sp_column>
+        <sp_widget display_value="Wetter Dashboard">18c0d0f247200210add7edf1d16d4354</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-02-27 15:17:07</sys_created_on>
+        <sys_id>3611d0f247200210add7edf1d16d4307</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
+        <sys_update_name>sp_instance_3611d0f247200210add7edf1d16d4307</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-02-27 15:43:06</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=3611d0f247200210add7edf1d16d4307"/>
+</record_update>
