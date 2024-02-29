@@ -3,6 +3,7 @@
         <element attributes="edge_encryption_enabled=true" label="Datum" max_length="40" name="datum" type="glide_date"/>
         <element label="Max Temperatur" max_length="15" name="max_temperatur" type="decimal"/>
         <element label="Min Temperatur" max_length="15" name="min_temperatur" type="decimal"/>
+        <element default="0" label="Regen" max_length="20" name="regen" type="decimal"/>
         <element attributes="edge_encryption_enabled=true" label="Stadt" max_length="60" name="stadt" type="string"/>
     </element>
 </database>

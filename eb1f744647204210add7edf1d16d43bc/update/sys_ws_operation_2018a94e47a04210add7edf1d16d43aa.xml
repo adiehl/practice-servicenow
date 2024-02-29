@@ -8,11 +8,11 @@
         <http_method>GET</http_method>
         <name>get_lat_lon</name>
         <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
-    var location = request.pathParams.location; // Extrahiere den Standort aus dem Pfad
+    var location = request.pathParams.location; // Extract the Location from the path
 
-    var restMessage = new sn_ws.RESTMessageV2(); // ServiceNow verwendet RESTMessageV2-Instanz zur Kommunikation
+    var restMessage = new sn_ws.RESTMessageV2(); // ServiceNow uses RESTMessageV2
 
-    // Setze die HTTP-Methode und die Endpoint-URL
+    // Setup Request to Geocoding
     restMessage.setHttpMethod('GET');
     restMessage.setEndpoint('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(location) + '&limit=1');
     try {
@@ -23,7 +23,7 @@
         if (jsonData.results && jsonData.results.length > 0) {
             var firstResult = jsonData.results[0];
 
-            // Bereite die Daten für die Rückgabe vor
+            // Provide the formatted response
             var result = {
                 id: firstResult.id,
                 name: firstResult.name,
@@ -31,18 +31,16 @@
                 longitude: firstResult.longitude
             };
 
-            response.setStatus(200); // Setze den HTTP-Statuscode korrekt
+            response.setStatus(200); // Goody :)
             response.setContentType('application/json');
-            //response.setBody(JSON.stringify(result)); // Setze den Antwortkörper
 			response.getStreamWriter().writeString(JSON.stringify(result));
         } else {
-            // Keine Ergebnisse gefunden
             response.setStatus(404); // Not Found
             response.setContentType('application/json');
 			response.getStreamWriter().writeString(JSON.stringify({error: "No results found"}));
         }
     } catch (ex) {
-        // Fehlerbehandlung
+        // Real Errors
         response.setStatus(500); // Internal Server Error
         response.setContentType('application/json');
         response.getStreamWriter().writeString(JSON.stringify({error: ex.message}));
@@ -63,14 +61,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2024-02-25 13:52:19</sys_created_on>
         <sys_id>2018a94e47a04210add7edf1d16d43aa</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>get_lat_lon</sys_name>
         <sys_package display_value="CaseStudy" source="x_1324232_casestud">eb1f744647204210add7edf1d16d43bc</sys_package>
         <sys_policy/>
         <sys_scope display_value="CaseStudy">eb1f744647204210add7edf1d16d43bc</sys_scope>
         <sys_update_name>sys_ws_operation_2018a94e47a04210add7edf1d16d43aa</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-02-25 14:21:47</sys_updated_on>
+        <sys_updated_on>2024-02-27 16:00:12</sys_updated_on>
         <web_service_definition display_value="casestudy_weather">bafcd5c247a04210add7edf1d16d4378</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>
